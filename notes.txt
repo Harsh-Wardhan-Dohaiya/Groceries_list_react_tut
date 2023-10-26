@@ -1,0 +1,223 @@
+1) Introduction to React JS
+
+-> React is used for making user interface
+-> we have installed es7 react extension
+-> we opened termials and wrote $ npx create-react-app 01tut , and this created the project folder
+-> In react there is only 1 html file that loads in the browser and thats in public folder, we won't do
+   much in public folder
+-> Use npm start to run the project
+
+2) React App component and JSX
+
+-> We import files that we want to use like css file, image
+-> Modern React uses functional component, we have a function in react
+-> return component of function retuns jsx (Javascript XML)
+-> jsx allows us to put javascript component using {}
+-> We can define variables in funtion before return statement
+-> We can also define other funtions in the function
+-> JSX renders data as text when it displays it
+-> We cannot render objects, boolean expresion on page
+-> We will generally start function name with handle
+
+3) React JS Function Components
+
+-> In index.js we see that we have imported the App component.
+-> We will create funtional components and load in App.js
+-> Basically we create Components and load in parent component and we keep creating like a component tree 
+-> We have create Header , Content and Footer component and imported in App
+
+4) CSS Styles in React JS
+
+-> There are several ways to apply CSS , one of them is to create style sheets like index.css, app.css
+-> We will need to import the CSS file in the component which we want to use the CSS
+-> We can also write inline CSS by writing  style={} inside the <div style={}></div>
+-> We can make a style object and use inside style={} or write within the style={}
+   Like <header style={{
+            backgroundColor: 'mediumblue',
+            color: '#fff'
+        }}
+
+    Or create a object
+    const Header = () => {
+        const HeaderStyle = {
+            backgroundColor: 'mediumblue',
+            color: '#fff'
+        }
+        return (
+            <header style={HeaderStyle}>
+                <h1> Groceries list</h1>
+            </header>
+        )
+    }
+
+5) React Click Events
+
+->(Look at Content5.js)
+-> We write a function like handleClick which tells what is to be done which we will call by onClick feature
+-> we pass onClick={handleClick} like this not like onClick={handleClick()} if we pass like this then handleClick() 
+   function will be called when the page is loaded.
+-> handleNameChange() is called when the page loads as it has ()
+-> Similarly when we are passing some thing we are creating anonymous function(function without name) which calls the handlClick() 
+   so that the anonymous function is called only after clicking the button
+-> e is event which contains all information
+-> We can also add something like onDoubleClick
+-> How can we edit the content inside the paragraph (i.e. call handleNameChange() function) by clicking the button, we want it to 
+   respond to something we do in react where the full page does not have to load but react will re-render the component, for this 
+   we will use useState
+
+6) React useState Hook
+
+->(Look at Content6.js)
+-> In last video we learned how to handle click Events
+-> Now we will see how to change the values of variables 
+-> we import useState, then we define variable like const[name, setName] = useState('Dave') where name will contain the default value 
+   that is assigned i.e. Dave and setName will be used to change the value of name anywhere in the function
+-> by using count, setCount we can see that when count enters a funtion i.e. hadleClick then the value of count is same after every 
+   statement, so the changes made in the last statement will be the final value of count 
+-> we define name, count using const as we don't want to change the value of these variables directly
+
+7) React JS Lists and Keys
+
+->(Look at Content7.js)
+-> Now we are acutally making a shopping list in which items can be ticked and deleted
+-> useState can contain array , we are using an array of objects
+-> each list item in react needs a key which helps identify which items have changed , which items are added
+-> if we have button then we use onClick, if we have input we use onChange()
+-> in handleCheck funtion we change the checked state of item whose id matches, we iterate using map
+-> By using localStorage we are locally saving out item
+-> in handleCheck we use filter to filter out items whose id does not match with id
+-> when we delete all the items then we display No Items to display
+
+8) React JS Props and Prop Drilling
+
+-> We can use (props) and props.title , props.item ,etc to pass information
+-> We can also discretely accept passed elements and use it without using keyword props
+-> We can give default values to props that will be used until no info is passed from parent component (see Header8.js)
+-> App->Content->ItemList->LineItem this is how we have designed so far 
+-> The footer is showing number of items in list
+-> The header is showing the title passed to it
+
+9) React JS Forms | Controlled Inputs
+
+-> Now we will learn how to add items in list, for this we use form 
+-> First we crete the AddItem page (AddItem9.js) , it has a form component which has label, input and a button
+-> We then declare newItem,setNewItem useState hook and handleSubmit funtion in App9.js
+-> We set the value ={newItem} and onChange={(e) => setNewItem(e.target.value)} in input of form of AddItem page
+-> We pass the event in handleSubmit
+-> The handleSubmit receives the handleSubmit and uses addItem funtion that we have created to add item in list
+-> The useRef hook is used to set back the focus(the cursor) to the add item box after clicking the + button
+
+-> We also implement the Search Functionality. For this we create SearchItem page and use search and setSearch useState
+-> We use the information that we get in search to filter in content -> item 
+   items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
+
+-> e.preventDefault() -> use this to prevent the page from reloading after filling a form
+
+11) React useEffect Hook tutorial
+
+-> useEffect runs at every render
+   useEffect (()=> {
+      console.log("render")
+   })
+
+-> We don't want this so we add an array that has the dependencies , so now useEffect will only run when dependencies are changed
+   useEffect (()=> {
+      console.log("load time")
+   },[])
+
+   Runs only at load time as dependencies list [] is empty 
+
+-> Runs when items are changed (added or deleted)
+   useEffect (()=> {
+      console.log("Updating Items")
+   },[items])
+
+-> Sets items when page is loaded in starting
+   const [items,setItems]= useState([]);
+   useEffect (()=> {
+      setItems(JSON.parse(localStorage.getItem('shoppinglist')))
+   },[])
+
+-> Saves the item when ever a change is made
+  useEffect (()=> {
+    localStorage.setItem('shoppinglist',JSON.stringify(items));
+  },[items])
+
+-> UseEffect is asynchronous , it is executed after everthing is rendered
+
+   console.log("Before useEffect")
+   useEffect (()=> {
+      console.log("Inside useEffect")
+   },[items])
+   console.log("After useEffect")
+
+   Console looks like :
+   Before useEffect
+   After useEffect
+   Inside useEffect
+    
+
+12) JSON Server Rest API | React Dev Server
+
+-> We create a db.json file which contains json object
+-> We use $ npx json-server -p 3500 -w data/db.json , it will give us the path to view json object in browser http://localhost:3500/items
+-> -p stands for port in which we want to open the json object, and -w stands for watch
+-> We have basically sent a GET request to get the data , we can see this in termial
+   GET /items 200 10.419 ms - 223 
+   The type of request is GET and response code was 200 , 10.419ms were taken to return the requested item
+
+   We will request all the items from http://localhost:3500/items and the request will be GET request
+
+-> We can also send a post request to the same address http://localhost:3500/items to post a new item
+-> To update an item we are gonna include id after the address http://localhost:3500/items/1 , like when we will delete then also we will have delete
+-> We can have get request, post request, delete request, when we upadate an item we will send a patch request
+
+13) Fetch Data from API in React JS
+
+-> async, awail
+-> We will see how to fetch data from API instead of local storage
+-> We are creating async fucntion in useEffect(we could have done it outside async function also but it needs to be called only once so better to create in useEffect) to fetch the list items from API
+-> We also create fetchError and setFetchError to display when that we caught an error instead of list items if we get an error
+-> {fetchError && <p style={{color:"red"}}>{`Error: ${fetchError}`}</p>}
+   This means if fetchError then display <p></p>
+
+-> We need to realize that an API may not be as fast as a rest api that we are running in a local environment, 
+   so lets similuate that by using set Timeout in our code
+
+-> It shows our list is empty when it is loading so we want to show the user that list is loading instead of empty list so we create isLoading and setIsLoading
+
+14) React CRUD Operations
+
+-> We performed Read Operation in last video
+-> CRUD - Create Read Update Delete
+-> We are creating apiRequest.js file where we will be creating a function that we can import to use for all of the other operations (other than read)
+-> We have imported apiRequest in APP.js
+-> We use POST method to add item in the list
+-> We use PATCH method to update item the the list
+-> We use DELETE method to delete item from the list
+-> We use GET method to read item from list
+-> When something is changed then request in 200s is sent, when we are again loading the same data then it is loaded from cache then request in 300s is sent and when we have and error then we get 400
+
+16) Learn React Router with a Beginners Project
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
